@@ -66,11 +66,41 @@ TCP_PORT = 9100
 
 After making changes, save and close the file (`Ctrl + O`, `Enter`, then `Ctrl + X` in Nano).
 
-### 3. Use `manage.sh` for service management:
+### **Step 5. Use `manage.sh` for service management**
 
     ```bash
     ./manage.sh
     ```
+
+## **Step 6:Testing the Service**
+
+After starting the service (using the default `printer.config` file provided), you can test its functionality by publishing a message to the MQTT topic using the following command:
+
+```bash
+mosquitto_pub -h broker.hivemq.com -p 1883 -t printerserver -m '{
+  "id": "test_id",
+  "message": "Hello, world! This is a test message.",
+  "callback": "https://apimocha.com/printerserver/callback"
+}'
+```
+
+### What Happens Next?
+
+- The service should process the message and print it.
+- The result of the print operation (success or failure) will be sent to the specified callback URL.
+
+You can check the callback response here:
+[https://apimocha.com/printerserver](https://apimocha.com/printerserver)
+
+### Verifying Message Delivery
+
+If you are unsure whether the message was sent correctly to the MQTT topic, you can monitor the topic by subscribing to it in a separate terminal. Use the following command:
+
+```bash
+mosquitto_sub -h broker.hivemq.com -p 1883 -t printerserver
+```
+
+Each time a message is published to the `printerserver` topic using `mosquitto_pub`, it should appear in the `mosquitto_sub` output.
 
 ---
 
@@ -170,37 +200,3 @@ The `manage.sh` script provides an interactive interface for managing the printe
   "id": "12345"
 }
 ```
-
-Here’s an improved version with clearer instructions, better formatting, and some added context for ease of understanding:
-
----
-
-## Testing the Service
-
-After starting the service (using the default `printer.config` file provided), you can test its functionality by publishing a message to the MQTT topic using the following command:
-
-```bash
-mosquitto_pub -h broker.hivemq.com -p 1883 -t printerserver -m '{
-  "id": "test_id",
-  "message": "Hello, world! This is a test message.",
-  "callback": "https://apimocha.com/printerserver/callback"
-}'
-```
-
-### What Happens Next?
-
-- The service should process the message and print it.
-- The result of the print operation (success or failure) will be sent to the specified callback URL.
-
-You can check the callback response here:
-[https://apimocha.com/printerserver](https://apimocha.com/printerserver)
-
-### Verifying Message Delivery
-
-If you are unsure whether the message was sent correctly to the MQTT topic, you can monitor the topic by subscribing to it in a separate terminal. Use the following command:
-
-```bash
-mosquitto_sub -h broker.hivemq.com -p 1883 -t printerserver
-```
-
-Each time a message is published to the `printerserver` topic using `mosquitto_pub`, it should appear in the `mosquitto_sub` output.
