@@ -2,8 +2,6 @@
 
 This repository contains the implementation and management tools for a custom printer service. It is designed to handle message processing from an MQTT broker, send it to an ESC/POS TCP printer, and call a callback endpoint after printing.
 
----
-
 ## **Installation**
 
 ### **Step 1: Install System Requirements**
@@ -72,7 +70,9 @@ After making changes, save and close the file (`Ctrl + O`, `Enter`, then `Ctrl +
 ./manage.sh
 ```
 
-## **Step 6:Testing the Service**
+---
+
+## **Testing the Service**
 
 After starting the service (using the default `printer.config` file provided), you can test its functionality by publishing a message to the MQTT topic using the following command:
 
