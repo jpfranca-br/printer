@@ -150,7 +150,3 @@ The `manage.sh` script provides an interactive interface for managing the printe
   "id": "12345"
 }
 ```
-
----
-
-This improved README maintains your original content while organizing and enhancing its readability. Let me know if you'd like further tweaks!
