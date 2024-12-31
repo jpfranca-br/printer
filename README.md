@@ -24,31 +24,47 @@ sudo apt update -y && sudo apt install mosquitto-clients -y
 
 ### **Installation and Setup**
 
-1. Clone the repository, make scripts executable, and run the initial setup script:
+### 1. Clone the repository, make scripts executable, and run the initial setup script:
 
     ```bash
     cd ~ && rm -rf printer && git clone https://github.com/jpfranca-br/printer.git && cd printer && chmod +x *.sh && ./setup.sh
     ```
 
-2. Edit the `printer.config` file to match your setup:
+### 2. Configure the `printer.config` File
 
-    ```bash
-    nano printer.config
-    ```
+To customize the service for your setup, you need to edit the `printer.config` file. Use the following command to open it in a text editor:
 
-   Example configuration:
+```bash
+nano printer.config
+```
 
-    ```bash
-    MQTT_HOST = io.adafruit.com
-    MQTT_PORT = 8883
-    MQTT_USER = <user>
-    MQTT_PASS = <password like aio_****************************>
-    TOPIC = <user>/feeds/<topic_name>
-    TCP_HOST = localhost
-    TCP_PORT = 9100
-    ```
+#### Example Configuration
 
-3. Use `manage.sh` for service management:
+Below is an example of a typical configuration file:
+
+```bash
+MQTT_HOST = broker.hivemq.com
+MQTT_PORT = 8883
+MQTT_USER = user
+MQTT_PASS = password
+TOPIC = printerserver
+TCP_HOST = 127.0.0.1
+TCP_PORT = 9100
+```
+
+**Explanation of Fields:**
+
+- **`MQTT_HOST`**: The address of your MQTT broker (e.g., `broker.hivemq.com`).
+- **`MQTT_PORT`**: The port used by the MQTT broker (default: `8883` for secure connections).
+- **`MQTT_USER`**: Your MQTT broker username (leave empty if not required).
+- **`MQTT_PASS`**: Your MQTT broker password (leave empty if not required).
+- **`TOPIC`**: The MQTT topic to which the service listens (e.g., `printerserver`).
+- **`TCP_HOST`**: The IP address of your printer (usually your printer's network address or `127.0.0.1` for local).
+- **`TCP_PORT`**: The port used to communicate with the printer (`9100` is the default for most network printers).
+
+After making changes, save and close the file (`Ctrl + O`, `Enter`, then `Ctrl + X` in Nano).
+
+### 3. Use `manage.sh` for service management:
 
     ```bash
     ./manage.sh
@@ -153,9 +169,13 @@ The `manage.sh` script provides an interactive interface for managing the printe
 }
 ```
 
-## Testing
+Here’s an improved version with clearer instructions, better formatting, and some added context for ease of understanding:
 
-Once the service is running (with the default printer.config file provided) you can test it by simply sending a message to the MQTT topic:
+---
+
+## Testing the Service
+
+After starting the service (using the default `printer.config` file provided), you can test its functionality by publishing a message to the MQTT topic using the following command:
 
 ```bash
 mosquitto_pub -h broker.hivemq.com -p 1883 -t printerserver -m '{
@@ -165,14 +185,20 @@ mosquitto_pub -h broker.hivemq.com -p 1883 -t printerserver -m '{
 }'
 ```
 
-This should print a message.
+### What Happens Next?
 
-If you are in doubt that the message is correctly sent to the MQTT topic, open another terminal window and subscribe to it. Every time you send a topic with mosquitto_pub, a new message should be shown in mosquitto_sub:
+- The service should process the message and print it.
+- The result of the print operation (success or failure) will be sent to the specified callback URL.
+
+You can check the callback response here:
+[https://apimocha.com/printerserver](https://apimocha.com/printerserver)
+
+### Verifying Message Delivery
+
+If you are unsure whether the message was sent correctly to the MQTT topic, you can monitor the topic by subscribing to it in a separate terminal. Use the following command:
 
 ```bash
 mosquitto_sub -h broker.hivemq.com -p 1883 -t printerserver
 ```
 
-The result of printing (success or failure) can be checked on the callback endpoint:
-
-[https://apimocha.com/printerserver](https://apimocha.com/printerserver)
+Each time a message is published to the `printerserver` topic using `mosquitto_pub`, it should appear in the `mosquitto_sub` output.
