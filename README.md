@@ -8,9 +8,11 @@ This repository contains the implementation and management tools for a custom pr
 
 ## **Install System Requirements**
 Only **Git** is required for cloning this repository.
+
     ```bash
     sudo apt update -y && sudo apt install git -y
     ```  
+    
 ## **Installation and Setup**
 
 1. Clone the repository, make scripts executable, run the initial setup script
