@@ -1,5 +1,0 @@
-{
-  "id": "test_id",
-  "message": "Hello, world! This is a test message.",
-  "callback": "https://apimocha.com/printerserver/callback"
-}
