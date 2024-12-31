@@ -14,33 +14,34 @@ This repository contains the implementation and management tools for a custom pr
 ## **Installation and Setup**
 
 1. Clone the repository, make scripts executable, run the initial setup script
-   ```bash
-   cd ~ && rm -rf printer && git clone https://github.com/jpfranca-br/printer.git && cd printer && chmod +x *.sh && ./setup.sh
-   ```
+
+    ```bash
+    cd ~ && rm -rf printer && git clone https://github.com/jpfranca-br/printer.git && cd printer && chmod +x *.sh && ./setup.sh
+    ```
 
 2. edit `printer.config` to match your setup:
 
-```bash
-nano printer.config
-```
+    ```bash
+    nano printer.config
+    ```
 
 Config file should be something like:
 
-```bash
-MQTT_HOST = io.adafruit.com
-MQTT_PORT = 8883
-MQTT_USER = <user>
-MQTT_PASS = <password like aio_****************************>
-TOPIC = <user>/feeds/<topic_name>
-TCP_HOST = localhost
-TCP_PORT = 9100
-```
+    ```bash
+    MQTT_HOST = io.adafruit.com
+    MQTT_PORT = 8883
+    MQTT_USER = <user>
+    MQTT_PASS = <password like aio_****************************>
+    TOPIC = <user>/feeds/<topic_name>
+    TCP_HOST = localhost
+    TCP_PORT = 9100
+    ```
 
 3. You can then use `manage.sh` for service management:
 
-```bash
-./manage.sh
-```
+    ```bash
+    ./manage.sh
+    ```
 
 ---
 
@@ -93,13 +94,14 @@ TCP_PORT = 9100
 # MQTT Payload
 
 ## Example
-```json
-{
-  "id": "12345",
-  "message": "Hello, world!",
-  "callback": "http://example.com/callback-endpoint"
-}
-```
+
+    ```json
+    {
+      "id": "12345",
+      "message": "Hello, world!",
+      "callback": "http://example.com/callback-endpoint"
+    }
+    ```
 
 ## How It Works
 1. Id is an id of your choice for your message. This will be logged to the log files and sent back to the callback url after printing.
@@ -114,19 +116,21 @@ TCP_PORT = 9100
 
 ### Example Callback Payload
 **Success Example:**
-```json
-{
-  "success": "true",
-  "id": "12345"
-}
-```
+
+    ```json
+    {
+      "success": "true",
+      "id": "12345"
+    }
+    ```
 
 **Failure Example:**
-```json
-{
-  "success": "false",
-  "id": "12345"
-}
-```
+
+    ```json
+    {
+      "success": "false",
+      "id": "12345"
+    }
+    ```
 
 If no `callback` is provided, the service will process the message but will not send any callback.
