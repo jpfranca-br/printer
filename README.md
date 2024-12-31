@@ -152,3 +152,27 @@ The `manage.sh` script provides an interactive interface for managing the printe
   "id": "12345"
 }
 ```
+
+## Testing
+
+Once the service is running (with the default printer.config file provided) you can test it by simply sending a message to the MQTT topic:
+
+```bash
+mosquitto_pub -h broker.hivemq.com -p 1883 -t printerserver -m '{
+  "id": "test_id",
+  "message": "Hello, world! This is a test message.",
+  "callback": "https://apimocha.com/printerserver/callback"
+}'
+```
+
+This should print a message.
+
+If you are in doubt that the message is correctly sent to the MQTT topic, open another terminal window and subscribe to it. Every time you send a topic with mosquitto_pub, a new message should be shown in mosquitto_sub:
+
+```bash
+mosquitto_sub -h broker.hivemq.com -p 1883 -t printerserver
+```
+
+The result of printing (success or failure) can be checked on the callback endpoint:
+
+[https://apimocha.com/printerserver](https://apimocha.com/printerserver)
