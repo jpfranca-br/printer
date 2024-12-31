@@ -14,6 +14,12 @@ Only **Git** is required for cloning this repository:
 sudo apt update -y && sudo apt install git -y
 ```
 
+If you also want to test (publish to MQTT), install Mosquitto
+
+```bash
+sudo apt update -y && sudo apt install mosquitto-clients -y
+```
+
 ---
 
 ### **Installation and Setup**
