@@ -6,33 +6,35 @@ This repository contains the implementation and management tools for a custom pr
 
 ## **Installation**
 
-### **Install System Requirements**
+### **Step 1: Install System Requirements**
 
-Only **Git** is required for cloning this repository:
+The only mandatory requirement for cloning this repository is **Git**. To install Git, run the following command:
 
 ```bash
 sudo apt update -y && sudo apt install git -y
 ```
 
-If you also want to test (publish to MQTT), install Mosquitto
+### **Step 2: (Optional) Install Mosquitto for Testing**
+
+If you plan to test by publishing messages to an MQTT topic, you’ll need the Mosquitto client tools. Install them with the following command:
 
 ```bash
 sudo apt update -y && sudo apt install mosquitto-clients -y
 ```
 
----
-
-### **Installation and Setup**
-
-### 1. Clone the repository, make scripts executable, and run the initial setup script:
+### **Step 3: Clone the repository, make scripts executable, and run the initial setup script**
 
     ```bash
     cd ~ && rm -rf printer && git clone https://github.com/jpfranca-br/printer.git && cd printer && chmod +x *.sh && ./setup.sh
     ```
 
-### 2. Configure the `printer.config` File
+### **Step 4: Configure the `printer.config` File**
 
-To customize the service for your setup, you need to edit the `printer.config` file. Use the following command to open it in a text editor:
+To customize the service for your setup, you need to edit the `printer.config` file. 
+
+**The provided `printer.config` is a working version using free services, which can be kept for basic testing purposes.**
+
+Use the following command to open it in a text editor:
 
 ```bash
 nano printer.config
