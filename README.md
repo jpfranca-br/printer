@@ -90,3 +90,43 @@ TCP_PORT = 9100
 6. **Disable Service**: Disables the service at startup.
 7. **Exit**: Exits the script.
 
+# MQTT Payload
+
+## Example
+```json
+{
+  "id": "12345",
+  "message": "Hello, world!",
+  "callback": "http://example.com/callback-endpoint"
+}
+```
+
+## How It Works
+1. Id is an id of your choice for your message. This will be logged to the log files and sent back to the callback url after printing.
+2. Message is a plain text or base64-encoded message to be printed.
+3. The `callback` field in the JSON payload is read when the message is processed.
+4. After the message is sent via TCP:
+   - A **success callback** is sent to the specified URL if the message is successfully delivered.
+   - A **failure callback** is sent if the message times out or fails to be delivered.
+5. The data sent to the `callback` URL is also in JSON format, with the following structure:
+   - **`success`**: A boolean value (`"true"` or `"false"`).
+   - **`id`**: The unique identifier of the processed message.
+
+### Example Callback Payload
+**Success Example:**
+```json
+{
+  "success": "true",
+  "id": "12345"
+}
+```
+
+**Failure Example:**
+```json
+{
+  "success": "false",
+  "id": "12345"
+}
+```
+
+If no `callback` is provided, the service will process the message but will not send any callback.
