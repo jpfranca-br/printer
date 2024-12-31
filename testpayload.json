@@ -1,5 +1,5 @@
 {
   "id": "test_id",
   "message": "Hello, world! This is a test message.",
-  "callback": "http://example.com/callback-endpoint"
+  "callback": "https://app.beeceptor.com/console/printerserver"
 }
