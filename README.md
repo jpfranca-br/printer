@@ -68,9 +68,9 @@ After making changes, save and close the file (`Ctrl + O`, `Enter`, then `Ctrl +
 
 ### **Step 5. Use `manage.sh` for service management**
 
-    ```bash
-    ./manage.sh
-    ```
+```bash
+./manage.sh
+```
 
 ## **Step 6:Testing the Service**
 
