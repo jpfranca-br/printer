@@ -67,7 +67,7 @@ LOG_ROTATE_FILE="$LOGROTATE_PATH/printer-service"
 
 CURRENT_DIR="$(pwd)"  # Get the current directory where the script is being executed
 
-FILES=("manage.sh") # Files to be made executable
+FILES=("manage.sh" "test.sh") # Files to be made executable
 
 SERVICE_PATH="$SYSTEMD_PATH/printer.service"
 
