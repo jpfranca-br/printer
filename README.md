@@ -7,7 +7,7 @@ This repository contains the implementation and management tools for a custom pr
 # **Installation**
 
 ## **Install System Requirements**
-- Only **Git**: required for cloning this repository.
+Only **Git** is required for cloning this repository.
     ```bash
     sudo apt update -y && sudo apt install git -y
     ```  
