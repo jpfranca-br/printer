@@ -24,9 +24,9 @@ sudo apt update -y && sudo apt install mosquitto-clients -y
 
 ### **Step 3: Clone the repository, make scripts executable, and run the initial setup script**
 
-    ```bash
-    cd ~ && rm -rf printer && git clone https://github.com/jpfranca-br/printer.git && cd printer && chmod +x *.sh && ./setup.sh
-    ```
+```bash
+cd ~ && rm -rf printer && git clone https://github.com/jpfranca-br/printer.git && cd printer && chmod +x *.sh && ./setup.sh
+```
 
 ### **Step 4: Configure the `printer.config` File**
 
