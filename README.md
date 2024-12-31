@@ -78,7 +78,7 @@ After starting the service (using the default `printer.config` file provided), y
 
 ```bash
 mosquitto_pub -h broker.hivemq.com -p 1883 -t printerserver -m '{
-  "id": "test_id",
+  "id": "'$(date +%s)'",
   "message": "Hello, world! This is a test message.",
   "callback": "https://apimocha.com/printerserver/callback"
 }'
