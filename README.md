@@ -1,7 +1,3 @@
-Here's an improved and visually appealing version of your README without changing the content:
-
----
-
 # **Printer Service**
 
 This repository contains the implementation and management tools for a custom printer service. It is designed to handle message processing from an MQTT broker, send it to an ESC/POS TCP printer, and call a callback endpoint after printing.
