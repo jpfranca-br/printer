@@ -15,7 +15,7 @@
 
 1. Clone the repository, make scripts executable, run the initial setup script
    ```bash
-   cd ~ && rm -rf printer && git clone https://github.com/jpfranca-br/ptiner.git && cd printer && chmod +x *.sh && ./setup.sh
+   cd ~ && rm -rf printer && git clone https://github.com/jpfranca-br/printer.git && cd printer && chmod +x *.sh && ./setup.sh
    ```
 2. After installing, use `manage.sh` for service management:
    ```bash
