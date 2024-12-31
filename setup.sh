@@ -2,6 +2,63 @@
 
 set -e  # Exit immediately if a command exits with a non-zero status
 
+# Set repository details
+REPO="jpfranca-br/printer"
+
+# Fetch the latest release data using GitHub API
+echo "Fetching latest release information..."
+LATEST_RELEASE=$(curl -s https://api.github.com/repos/$REPO/releases/latest)
+
+# Check if the API call was successful
+if [[ $? -ne 0 || -z "$LATEST_RELEASE" ]]; then
+    echo "Failed to fetch release information. Please check your network or repository details."
+    exit 1
+fi
+
+# Extract the tag name and assets from the release
+TAG_NAME=$(echo "$LATEST_RELEASE" | grep -Po '"tag_name": "\K.*?(?=")')
+ASSETS=$(echo "$LATEST_RELEASE" | grep -Po '"browser_download_url": "\K.*?(?=")')
+
+# Check if assets were found
+if [[ -z "$ASSETS" ]]; then
+    echo "No assets found in the latest release."
+    exit 1
+fi
+
+# Display the available binaries
+echo "Latest release: $TAG_NAME"
+echo "Available binaries:"
+ASSET_ARRAY=($ASSETS)
+FILENAMES=()
+for i in "${!ASSET_ARRAY[@]}"; do
+    FILENAME=$(basename "${ASSET_ARRAY[$i]}")
+    FILENAMES+=("$FILENAME")
+    echo "$((i + 1)). $FILENAME"
+done
+
+# Prompt the user to select a binary
+read -p "Enter the number of the binary to download: " SELECTION
+if ! [[ "$SELECTION" =~ ^[0-9]+$ ]] || (( SELECTION < 1 || SELECTION > ${#ASSET_ARRAY[@]} )); then
+    echo "Invalid selection. Exiting."
+    exit 1
+fi
+
+# Download the selected binary
+URL=${ASSET_ARRAY[$((SELECTION - 1))]}
+echo "Downloading $URL..."
+curl -L -o printer "$URL"
+
+# Check if the download was successful
+if [[ $? -eq 0 ]]; then
+    chmod +x printer
+    echo "Binary downloaded and saved as 'printer'."
+else
+    echo "Failed to download the binary."
+    exit 1
+fi
+
+#############
+
 SYSTEMD_PATH="/etc/systemd/system"
 
 LOGROTATE_PATH="/etc/logrotate.d"
@@ -10,7 +67,7 @@ LOG_ROTATE_FILE="$LOGROTATE_PATH/printer-service"
 
 CURRENT_DIR="$(pwd)"  # Get the current directory where the script is being executed
 
-FILES=("setup.sh" "printer" "manage.sh") # Files to be made executable
+FILES=("manage.sh") # Files to be made executable
 
 SERVICE_PATH="$SYSTEMD_PATH/printer.service"
 
