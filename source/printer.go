@@ -214,17 +214,13 @@ func onMessage(client mqtt.Client, msg mqtt.Message) {
 		fmt.Printf("[DEBUG] %s - Plain Text Message. No decoding needed\n", messageID)
 	}
 
-
-        // Convert the string to CP850
-        message2 := data["message"].(string)
-        cp850Encoded, err := encodeToCP850(message2)
-        if err != nil {
-                fmt.Printf("[ERROR] Error encoding to CP850: %v", err)
-        } else {
-                fmt.Printf("[DEBUG] %s - Reencoded to CP850.\n", messageID)
-                // Replace the "message" value in the map with the CP850-encoded string
-                data["message"] = string(cp850Encoded)
-        }
+	// Convert the string to CP850
+	if cp850Encoded, err := encodeToCP850(data["message"].(string)); err != nil {
+	    fmt.Printf("[ERROR] %s - Failed to encode message to CP850: %v\n", messageID, err)
+	} else {
+	    data["message"] = cp850Encoded
+	    fmt.Printf("[DEBUG] %s - Successfully reencoded message to CP850.\n", messageID)
+	}
 
 	messageQueue <- data
 
@@ -252,11 +248,36 @@ func main() {
 	opts.SetUsername(MQTT_USER)
 	opts.SetPassword(MQTT_PASS)
 	opts.SetTLSConfig(&tls.Config{})
+//	opts.OnConnect = func(c mqtt.Client) {
+//		if token := c.Subscribe(TOPIC, 0, onMessage); token.Wait() && token.Error() != nil {
+//			fmt.Printf("[ERROR] Error subscribing to topic: %v\n", token.Error())
+//			return
+//		}
+//	}
+
+
 	opts.OnConnect = func(c mqtt.Client) {
-		if token := c.Subscribe(TOPIC, 0, onMessage); token.Wait() && token.Error() != nil {
-			fmt.Printf("[ERROR] Error subscribing to topic: %v\n", token.Error())
+		retryAttempts := 0
+		maxRetries := 5
+		delay := 2 * time.Second // Delay between retries
+		for {
+			if token := c.Subscribe(TOPIC, 0, onMessage); token.Wait() && token.Error() != nil {
+				fmt.Printf("[ERROR] Error subscribing to topic: %v\n", token.Error())
+				retryAttempts++
+				if retryAttempts >= maxRetries {
+					fmt.Printf("[ERROR] Max retries reached. Could not subscribe to topic: %s\n", TOPIC)
+					return
+				}
+				fmt.Printf("[INFO] Retrying subscription (%d/%d)...\n", retryAttempts, maxRetries)
+				time.Sleep(delay)
+			} else {
+				fmt.Printf("[INFO] Successfully subscribed to topic: %s\n", TOPIC)
+				break
+			}
 		}
 	}
+
+
 	client := mqtt.NewClient(opts)
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
 		fmt.Printf("[ERROR] Failed to connect to MQTT broker: %v\n", token.Error())
