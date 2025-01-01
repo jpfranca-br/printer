@@ -62,7 +62,11 @@ TCP_PORT = 9100
 - **`TCP_HOST`**: The IP address of your printer (usually your printer's network address or `127.0.0.1` for local).
 - **`TCP_PORT`**: The port used to communicate with the printer (`9100` is the default for most network printers).
 
-After making changes, save and close the file (`Ctrl + O`, `Enter`, then `Ctrl + X` in Nano).
+After making changes, save and close the file (`Ctrl + O`, `Enter`, then `Ctrl + X` in Nano) and restart the service with
+
+```bash
+sudo systemctl restart printer
+```
 
 ### **Step 5. Use `manage.sh` for service management**
 
