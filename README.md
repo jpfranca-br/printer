@@ -81,6 +81,12 @@ sudo systemctl restart printer
 After starting the service (using the default `printer.config` file provided), you can test its functionality by publishing a message to the MQTT topic using the following command:
 
 ```bash
+./test.sh
+```
+
+or
+
+```bash
 mosquitto_pub -h broker.hivemq.com -p 1883 -t printerserver -m '{
   "id": "'$(date +%s)'",
   "message": "Hello, world! Test message ID '$(date +%s)'.",
@@ -88,23 +94,15 @@ mosquitto_pub -h broker.hivemq.com -p 1883 -t printerserver -m '{
 }'
 ```
 
-### What Happens Next?
+The service should process the message and print it and the result of the print operation (success or failure) will be sent to the specified callback URL.
 
-- The service should process the message and print it.
-- The result of the print operation (success or failure) will be sent to the specified callback URL.
-
-You can check the callback response here:
-[https://apimocha.com/printerserver](https://apimocha.com/printerserver)
-
-### Verifying Message Delivery
+You can check the callback response here: [https://apimocha.com/printerserver](https://apimocha.com/printerserver)
 
 If you are unsure whether the message was sent correctly to the MQTT topic, you can monitor the topic by subscribing to it in a separate terminal. Use the following command:
 
 ```bash
 mosquitto_sub -h broker.hivemq.com -p 1883 -t printerserver
 ```
-
-Each time a message is published to the `printerserver` topic using `mosquitto_pub`, it should appear in the `mosquitto_sub` output.
 
 ---
 
