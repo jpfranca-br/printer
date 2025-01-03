@@ -7,7 +7,8 @@ message_id=$(date +%s)
 mosquitto_pub -h broker.hivemq.com -p 1883 -t printerserver -m '{
   "id": "'"$message_id"'",
   "message": "Hello, world! Test message ID '"$message_id"'.",
-  "callback": "https://apimocha.com/printerserver/callback"
+  "callback": "https://apimocha.com/printerserver/callback",
+  "cut": "true"
 }'
 
 # Echo the message ID
