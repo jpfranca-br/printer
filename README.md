@@ -50,6 +50,7 @@ MQTT_PASS = password
 TOPIC = printerserver
 TCP_HOST = 127.0.0.1
 TCP_PORT = 9100
+#USB_PORT = /dev/usb/lp0
 ```
 
 **Explanation of Fields:**
@@ -61,6 +62,9 @@ TCP_PORT = 9100
 - **`TOPIC`**: The MQTT topic to which the service listens (e.g., `printerserver`).
 - **`TCP_HOST`**: The IP address of your printer (usually your printer's network address or `127.0.0.1` for local).
 - **`TCP_PORT`**: The port used to communicate with the printer (`9100` is the default for most network printers).
+- **`USB_PORT`**: The USB host  used to communicate with the printer.
+
+You should either comment TCP_HOST + TCP_PORT *OR* USB_HOST
 
 After making changes, save and close the file (`Ctrl + O`, `Enter`, then `Ctrl + X` in Nano) and restart the service with
 
@@ -90,7 +94,8 @@ or
 mosquitto_pub -h broker.hivemq.com -p 1883 -t printerserver -m '{
   "id": "'$(date +%s)'",
   "message": "Hello, world! Test message ID '$(date +%s)'.",
-  "callback": "https://apimocha.com/printerserver/callback"
+  "callback": "https://apimocha.com/printerserver/callback",
+  "cut": "true"
 }'
 ```
 
@@ -124,15 +129,15 @@ The `printer.go` application is the core of the printer service, providing the f
 - **Message Processing**:
   - Handles messages from MQTT topics.
   - Encodes messages in CP850.
-  - Sends messages via TCP.
+  - Sends messages via TCP or USB.
 
 - **MQTT Integration**:
   - Connects to an MQTT broker.
   - Subscribes to configurable topics.
   - Decodes and processes MQTT messages.
 
-- **TCP Communication**:
-  - Sends messages to a specified TCP server.
+- **Communication**:
+  - Sends messages to a specified TCP or USB printer.
   - Manages connection retries and timeouts.
 
 - **Callback Mechanism**:
@@ -167,7 +172,8 @@ The `manage.sh` script provides an interactive interface for managing the printe
 {
   "id": "12345",
   "message": "Hello, world!",
-  "callback": "http://example.com/callback-endpoint"
+  "callback": "http://example.com/callback-endpoint",
+  "cut": "true"
 }
 ```
 
@@ -175,11 +181,8 @@ The `manage.sh` script provides an interactive interface for managing the printe
 
 1. **`id`**: A unique identifier for your message. It will appear in logs and callback responses.
 2. **`message`**: The plain text or base64-encoded message to print.
-3. **`callback`**: A URL where the service sends the result of the message processing.
-
-   - **Success**: Sent if the message is delivered successfully.
-   - **Failure**: Sent if the message times out or fails.
-   - If no `callback` is provided, the service processes the message without sending a response.
+3. **`callback`**: optional - URL where the service sends the result of the message processing. If key is not provided, the service processes the message without sending a response.
+4. **`cut`**: optional - cut paper after each message. Can be `true` or `false`. If key is not provided, does not cut the paper.
 
 ---
 
