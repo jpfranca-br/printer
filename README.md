@@ -1,6 +1,6 @@
 # **Printer Service**
 
-This repository contains the implementation and management tools for a custom printer service. It is designed to handle message processing from an MQTT broker, send it to an ESC/POS TCP printer, and call a callback endpoint after printing.
+This repository contains the implementation and management tools for a custom printer service. It is designed to handle message processing from an MQTT broker, send it to an ESC/POS TCP or USB printer, and call a callback endpoint after printing.
 
 ## **Installation**
 
@@ -115,7 +115,7 @@ mosquitto_sub -h broker.hivemq.com -p 1883 -t printerserver
 
 - **Message Handling**: Processes and encodes messages (e.g., CP850 encoding).
 - **MQTT Integration**: Receives and processes messages via MQTT.
-- **TCP Communication**: Sends processed messages to a TCP server.
+- **Communication**: Sends processed messages to a TCP or USB printer.
 - **Management Scripts**: Includes comprehensive tools for service configuration and management.
 
 ---
